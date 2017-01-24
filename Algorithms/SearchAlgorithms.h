@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <iterator>
 
 namespace searchAlgorithms {
 
@@ -73,7 +75,86 @@ namespace searchAlgorithms {
 		return -1;
 	}
 
+	//Search a value in an array
+	//Return its index
+	template<typename T>
+	int binarySearchIndex(std::vector<T> & element, const T& searchValue)
+	{
+		if (element.size() == 0) {
+			throw std::exception("Element size cannot be 0. Cannot perform search");
+			return -1;
+		}
 
+		//Sort the elements before search
+		std::sort(element.begin(), element.end());
+
+		return binarySearchIndexHelper(element, searchValue, 0, element.size());
+	}
+
+	template<typename T>
+	int binarySearchIndexHelper(std::vector<T> & element, const T& searchValue, const size_t startIndex, const size_t endIndex)
+	{
+		if (startIndex > endIndex || startIndex == endIndex)
+			return -1;
+
+		size_t middle = (startIndex + endIndex) / 2;
+
+		if (searchValue == element[middle])
+			return middle;
+		else if (searchValue < element[middle])
+			return binarySearchIndexHelper(element, searchValue, startIndex, middle - 1);
+		else if (searchValue > element[middle])
+			return binarySearchIndexHelper(element, searchValue, middle + 1, endIndex);
+		
+		return -1;
+	}
+
+	//Search a value in an array
+	//Return its index
+	template<typename T>
+	bool binarySearchValue(std::vector<T> & element, const T& searchValue)
+	{
+		if (element.size() == 0) {
+			throw std::exception("Element size cannot be 0. Cannot perform search");
+			return false;
+		}
+
+		//Sort the elements before search
+		std::cout << "Sort array before perform searching:\n";
+		
+		std::sort(element.begin(), element.end());
+		
+		std::cout << "Array after sort:\n";
+		printArray(element);
+		
+		//Peform binary search
+		return binarySearchValueHelper(element, searchValue, 0, element.size());
+	}
+
+	template<typename T>
+	bool binarySearchValueHelper(std::vector<T> & element, const T& searchValue, const size_t startIndex, const size_t endIndex)
+	{
+		if (startIndex > endIndex || startIndex == endIndex)
+			return false;
+
+		size_t middle = (startIndex + endIndex) / 2;
+
+		if (searchValue == element[middle])
+			return true;
+		else if (searchValue < element[middle])
+			return binarySearchValueHelper(element, searchValue, startIndex, middle - 1);
+		else if (searchValue > element[middle])
+			return binarySearchValueHelper(element, searchValue, middle + 1, endIndex);
+		
+		return false;
+	}
+
+	template<typename T>
+	void printArray(const std::vector<T> & elements)
+	{
+		std::for_each(elements.cbegin(), elements.cend(), [](const T& value) { std::cout << value << " "; });
+		std::cout << "\n\n";
+	}
 }
 
 #endif
