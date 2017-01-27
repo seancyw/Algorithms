@@ -9,16 +9,18 @@ enum testCase
 {
 	LINEAR_SEARCH,
 	BINARY_SEARCH,
-	BUBBLE_SORT
+	BUBBLE_SORT,
+	SELECTION_SORT
 };
 
 void linearSearchTest();
 void binarySearchTest();
 void bubbleSortTest();
+void selectionSortTest();
 
 int main()
 {
-	testCase test = BUBBLE_SORT;
+	testCase test = SELECTION_SORT;
 
 	switch (test)
 	{
@@ -32,6 +34,10 @@ int main()
 
 	case BUBBLE_SORT:
 		bubbleSortTest();
+		break;
+
+	case SELECTION_SORT:
+		selectionSortTest();
 		break;
 
 	default:
@@ -209,6 +215,67 @@ void bubbleSortTest()
 
 	//Sort the list in descending order
 	sortAlgorithms::bubbleSort(doubleList, false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	sortAlgorithms::printArray(doubleList);
+
+	std::cout << "\n";
+}
+
+void selectionSortTest()
+{
+	std::cout << "Selection sort test\n\n";
+
+	//Initialize a empty vector to store value
+	std::vector<int>    intList;
+	std::vector<double> doubleList;
+
+	//initialize random seeds
+	srand((unsigned int)time(NULL));
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+	int randomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		randomValue = rand() % 250 + 1;
+		intList.push_back(randomValue);
+		std::cout << randomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::selectionSort(intList, true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	sortAlgorithms::printArray(intList);
+
+	//Sort the list in descending order
+	sortAlgorithms::selectionSort(intList, false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	sortAlgorithms::printArray(intList);
+
+	std::cout << "\n";
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+
+	double doubleRandomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		doubleRandomValue = (rand() % 500 + 1) + iter / 10.;
+		doubleList.push_back(doubleRandomValue);
+		std::cout << doubleRandomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::selectionSort(doubleList, true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	sortAlgorithms::printArray(doubleList);
+
+	//Sort the list in descending order
+	sortAlgorithms::selectionSort(doubleList, false);
 
 	std::cout << "\nAfter sorting in descending order, the lists contains: ";
 	sortAlgorithms::printArray(doubleList);

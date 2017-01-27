@@ -35,7 +35,7 @@ namespace searchAlgorithms {
 		if (list.size() == 0)
 			return -1;
 
-		for (size_t index = 0; index < list.size(); ++index) {
+		for (int index = 0; index < static_cast<int>(list.size()); ++index) {
 			if (list[index] == searchValue)
 				return index;
 		}
@@ -97,7 +97,7 @@ namespace searchAlgorithms {
 		if (startIndex > endIndex || startIndex == endIndex)
 			return -1;
 
-		size_t middle = (startIndex + endIndex) / 2;
+		int middle = static_cast<int>(startIndex + endIndex) / 2;
 
 		if (searchValue == element[middle])
 			return middle;

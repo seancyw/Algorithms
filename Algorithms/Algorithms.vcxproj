@@ -120,14 +120,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="SearchAlgorithms.h" />
-    <ClInclude Include="SearchValidation.h" />
     <ClInclude Include="SortAlgorithms.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SearchAlgorithms.cpp" />
-    <ClCompile Include="SearchValidation.cpp" />
-    <ClCompile Include="SortAlgorithms.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
