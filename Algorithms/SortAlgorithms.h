@@ -148,6 +148,68 @@ namespace sortAlgorithms
 	}
 
 	template<typename T>
+	class MergeSort
+	{
+	public:
+		MergeSort(std::vector<T> & data)
+			: elements(data)
+		{
+		}
+
+		void sort(bool ascending)
+		{
+			//Return if nothing to sort
+			if (elements.size() == 0) {
+				throw std::exception("Cannot process empty list!");
+				return;
+			}
+
+			sortHelper(ascending, 0, elements.size());
+		}
+
+		
+
+		void merge(bool ascending, int lowIndex, int middleIndex, int highIndex)
+		{
+			//Merge elements[lowIndex...middleIndex] 
+			//with elements[middleIndex+1...highIndex]
+			int i = lowIndex;
+			int j = middleIndex + 1;
+
+			std::vector<T> mergeArray(elements);
+
+			//Merge back to elements[low..highIndex]
+			for (int k = lowIndex; k <= highIndex; ++k) {
+				if (i > middleIndex)
+					elements[k] = mergeArray[j++];
+				else if(j > highIndex)
+					elements[k] = mergeArray[i++];
+				else if (lesser(mergeArray[j], mergeArray[i]) && ascending)
+					elements[k] = mergeArray[j++];
+				else
+					elements[k] = mergeArray[i++];
+			}
+		}
+
+	private:
+		std::vector<T> elements;
+
+		void sortHelper(int lowIndex, int highIndex, bool ascending)
+		{
+			if (highIndex <= lowIndex)
+				return;
+
+			int middle = (lowIndex + highIndex) / 2;
+
+			//Sort left half
+			sortHelper(lowIndex, middle, ascending);
+
+			//Sort right half
+			sortHelper(middle + 1, highIndex, ascending);
+		}
+	};
+	
+	template<typename T>
 	bool greater(const T& value1, const T& value2)
 	{
 		return value1 > value2;
