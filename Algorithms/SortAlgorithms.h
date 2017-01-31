@@ -164,31 +164,62 @@ namespace sortAlgorithms
 				return;
 			}
 
-			sortHelper(ascending, 0, elements.size());
+			sortHelper(0, static_cast<int>(elements.size()) - 1, ascending);
 		}
 
-		
 
-		void merge(bool ascending, int lowIndex, int middleIndex, int highIndex)
+		void merge(int lowIndex, int middleIndex, int highIndex, bool ascending)
 		{
-			//Merge elements[lowIndex...middleIndex] 
-			//with elements[middleIndex+1...highIndex]
-			int i = lowIndex;
-			int j = middleIndex + 1;
+			//Index into left subvector
+			int leftIndex = lowIndex;
 
-			std::vector<T> mergeArray(elements);
+			//Index into right subvector
+			int rightIndex = middleIndex + 1;
 
-			//Merge back to elements[low..highIndex]
-			for (int k = lowIndex; k <= highIndex; ++k) {
-				if (i > middleIndex)
-					elements[k] = mergeArray[j++];
-				else if(j > highIndex)
-					elements[k] = mergeArray[i++];
-				else if (lesser(mergeArray[j], mergeArray[i]) && ascending)
-					elements[k] = mergeArray[j++];
-				else
-					elements[k] = mergeArray[i++];
+			//Index into temporary working vector
+			int combinedIndex = lowIndex;
+			std::vector<T> mergeArray(elements.size());
+
+			//Merge vectors until reaching end of either
+			while (leftIndex <= middleIndex && rightIndex <= highIndex) {
+				
+				//Place smaller of two current elements into result and 
+				//move to next space in vector
+				if (ascending) {
+					if (elements[leftIndex] <= elements[rightIndex])
+						mergeArray[combinedIndex++] = elements[leftIndex++];
+					else
+						mergeArray[combinedIndex++] = elements[rightIndex++];
+				}
+				else {
+					if (elements[rightIndex] >= elements[leftIndex])
+						mergeArray[combinedIndex++] = elements[rightIndex++];
+					else
+						mergeArray[combinedIndex++] = elements[leftIndex++];
+				}
 			}
+
+			//if at end of left vector
+			if (leftIndex == rightIndex) {
+				//copy in rest of right vector
+				while (rightIndex <= highIndex)
+					mergeArray[combinedIndex++] = elements[rightIndex++];
+			}
+			else { //at end of right vector
+				//copy in rest of left vector
+				while (leftIndex <= middleIndex)
+					mergeArray[combinedIndex++] = elements[leftIndex++];
+			}
+
+			//copy values back to original vector
+			for (int i = lowIndex; i <= highIndex; ++i)
+				elements[i] = mergeArray[i];
+		}
+
+		void printArray() const
+		{
+			std::for_each(elements.cbegin(), elements.cend(), [](const T & value) { std::cout << value << " ";  });
+			std::cout << std::endl;
 		}
 
 	private:
@@ -196,9 +227,12 @@ namespace sortAlgorithms
 
 		void sortHelper(int lowIndex, int highIndex, bool ascending)
 		{
-			if (highIndex <= lowIndex)
+			//test base case
+			//if size of vector equals to 1
+			if ((highIndex - lowIndex) < 1)
 				return;
 
+			//Calculate the middle of vector
 			int middle = (lowIndex + highIndex) / 2;
 
 			//Sort left half
@@ -206,6 +240,8 @@ namespace sortAlgorithms
 
 			//Sort right half
 			sortHelper(middle + 1, highIndex, ascending);
+
+			merge(lowIndex, middle, highIndex, ascending);
 		}
 	};
 	

@@ -12,7 +12,8 @@ enum testCase
 	BUBBLE_SORT,
 	SELECTION_SORT,
 	INSERTION_SORT,
-	SHELL_SORT
+	SHELL_SORT,
+	MERGE_SORT
 };
 
 void linearSearchTest();
@@ -21,10 +22,11 @@ void bubbleSortTest();
 void selectionSortTest();
 void insertionSortTest();
 void shellSortTest();
+void mergeSortTest();
 
 int main()
 {
-	testCase test = SHELL_SORT;
+	testCase test = MERGE_SORT;
 
 	switch (test)
 	{
@@ -50,6 +52,10 @@ int main()
 
 	case SHELL_SORT:
 		shellSortTest();
+		break;
+
+	case MERGE_SORT:
+		mergeSortTest();
 		break;
 
 	default:
@@ -413,6 +419,69 @@ void shellSortTest()
 
 	std::cout << "\nAfter sorting in descending order, the lists contains: ";
 	sortAlgorithms::printArray(doubleList);
+
+	std::cout << "\n";
+}
+
+void mergeSortTest()
+{
+	std::cout << "Merge sort test\n\n";
+
+	//Initialize a empty vector to store value
+	std::vector<int>    intList;
+	std::vector<double> doubleList;
+
+	//initialize random seeds
+	srand((unsigned int)time(NULL));
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+	int randomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		randomValue = rand() % 250 + 1;
+		intList.push_back(randomValue);
+		std::cout << randomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::MergeSort<int> mergeIntSort(intList);
+	mergeIntSort.sort(true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	mergeIntSort.printArray();
+
+	//Sort the list in descending order
+	mergeIntSort.sort(false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	mergeIntSort.printArray();
+
+	std::cout << "\n";
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+
+	double doubleRandomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		doubleRandomValue = (rand() % 500 + 1) + iter / 10.;
+		doubleList.push_back(doubleRandomValue);
+		std::cout << doubleRandomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::MergeSort<double> mergeDoubleSort(doubleList);
+	mergeDoubleSort.sort(true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	mergeDoubleSort.printArray();
+
+	//Sort the list in descending order
+	mergeDoubleSort.sort(false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	mergeDoubleSort.printArray();
 
 	std::cout << "\n";
 }
