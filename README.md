@@ -6,8 +6,9 @@
 - ~~Binary Search~~
 
 #Sort
-- Bubble Sort
-- Insertion Sort
+- ~~Bubble Sort~~
+- ~~Insertion Sort~~
+- ~~Shell Sort~~
 - Merged Sort
 
 Compilation
