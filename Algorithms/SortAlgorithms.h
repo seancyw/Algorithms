@@ -199,17 +199,13 @@ namespace sortAlgorithms
 				}
 			}
 
-			//if at end of left vector
-			if (leftIndex == rightIndex) {
-				//copy in rest of right vector
-				while (rightIndex <= highIndex)
-					mergeArray[combinedIndex++] = elements[rightIndex++];
-			}
-			else { //at end of right vector
-				//copy in rest of left vector
-				while (leftIndex <= middleIndex)
-					mergeArray[combinedIndex++] = elements[leftIndex++];
-			}
+			//copy in rest of right vector
+			while (rightIndex <= highIndex)
+				mergeArray[combinedIndex++] = elements[rightIndex++];
+
+			//copy in rest of left vector
+			while (leftIndex <= middleIndex)
+				mergeArray[combinedIndex++] = elements[leftIndex++];
 
 			//copy values back to original vector
 			for (int i = lowIndex; i <= highIndex; ++i)
