@@ -242,6 +242,94 @@ namespace sortAlgorithms
 	};
 	
 	template<typename T>
+	class QuickSort
+	{
+	public:
+		QuickSort(const std::vector<T> & data)
+			: elements(data)
+		{
+		}
+
+		void sort(bool ascending)
+		{
+			//Return if nothings to sort
+			if (elements.size() == 0) {
+				throw std::exception("Elements size is 0, nothing to sort.");
+				return;
+			}
+
+			//Eliminate dependence on input
+			std::random_shuffle(elements.begin(), elements.end());
+
+			//Do sorting
+			sortHelper(0, elements.size() - 1, ascending);
+		}
+
+		void sortHelper(int lowIndex, int highIndex, bool ascending)
+		{
+			//Return if the high index is less than lowIndex
+			if (highIndex <= lowIndex) {
+				throw std::exception("High index must be less than low index.");
+				return;
+			}
+
+			//Partitioning
+			int index = partition(lowIndex, highIndex, ascending);
+			
+			//Sort left part
+			sortHelper(lowIndex, index - 1, ascending);
+			
+			//Sort right part
+			sortHelper(index + 1, highIndex, ascending);
+
+		}
+
+		int partition(int lowIndex, int highIndex, bool ascending)
+		{
+			//Left and right scan indices
+			int left  = lowIndex; 
+			int right = highIndex + 1;
+
+			//Partitioning item
+			T partitionItem = elements[lowIndex];
+
+			while (true) {
+				//Scan right, scan left, check for scan complete
+				//and swap
+				while (lesser(elements[left], partitionItem) && left < elements.size()) {
+					++left;
+
+					if (left == highIndex)
+						break;
+				}
+
+				while (lesser(partitionItem, elements[right]) && right >= 0) {
+					--right;
+
+					if (right == lowIndex)
+						break;
+				}
+
+				std::swap(elements[left], elements[right]);
+			}
+
+			//Put partitionItem = a[right] into position
+			std::swap(elements[lowIndex], elements[highIndex]);
+
+			return right;
+		}
+
+		void printArray() const
+		{
+			std::for_each(elements.cbegin(), elements.cend(), [](const T & value) { std::cout << value << " ";  });
+			std::cout << std::endl;
+		}
+
+	private:
+		std::vector<T> elements;
+	};
+
+	template<typename T>
 	bool greater(const T& value1, const T& value2)
 	{
 		return value1 > value2;
