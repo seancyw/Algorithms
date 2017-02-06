@@ -13,7 +13,8 @@ enum testCase
 	SELECTION_SORT,
 	INSERTION_SORT,
 	SHELL_SORT,
-	MERGE_SORT
+	MERGE_SORT,
+	QUICK_SORT
 };
 
 void linearSearchTest();
@@ -23,10 +24,11 @@ void selectionSortTest();
 void insertionSortTest();
 void shellSortTest();
 void mergeSortTest();
+void quickSortTest();
 
 int main()
 {
-	testCase test = MERGE_SORT;
+	testCase test = QUICK_SORT;
 
 	switch (test)
 	{
@@ -56,6 +58,10 @@ int main()
 
 	case MERGE_SORT:
 		mergeSortTest();
+		break;
+
+	case QUICK_SORT:
+		quickSortTest();
 		break;
 
 	default:
@@ -482,6 +488,69 @@ void mergeSortTest()
 
 	std::cout << "\nAfter sorting in descending order, the lists contains: ";
 	mergeDoubleSort.printArray();
+
+	std::cout << "\n";
+}
+
+void quickSortTest()
+{
+	std::cout << "Quick sort test\n\n";
+
+	//Initialize a empty vector to store value
+	std::vector<int>    intList;
+	std::vector<double> doubleList;
+
+	//initialize random seeds
+	srand((unsigned int)time(NULL));
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+	int randomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		randomValue = rand() % 250 + 1;
+		intList.push_back(randomValue);
+		std::cout << randomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::QuickSort<int> quickIntSort(intList);
+	quickIntSort.sort(true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	quickIntSort.printArray();
+
+	//Sort the list in descending order
+	quickIntSort.sort(false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	quickIntSort.printArray();
+
+	std::cout << "\n";
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+
+	double doubleRandomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		doubleRandomValue = (rand() % 500 + 1) + iter / 10.;
+		doubleList.push_back(doubleRandomValue);
+		std::cout << doubleRandomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::QuickSort<double> quickDoubleSort(doubleList);
+	quickDoubleSort.sort(true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	quickDoubleSort.printArray();
+
+	//Sort the list in descending order
+	quickDoubleSort.sort(false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	quickDoubleSort.printArray();
 
 	std::cout << "\n";
 }

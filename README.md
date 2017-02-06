@@ -9,7 +9,8 @@
 - ~~Bubble Sort~~
 - ~~Insertion Sort~~
 - ~~Shell Sort~~
-- Merged Sort
+- ~~Merged Sort~~
+- ~~Quick Sort~~
 
 Compilation
 - Required Microsoft Visual Studio 2015 and above

@@ -274,49 +274,45 @@ namespace sortAlgorithms
 			}
 
 			//Partitioning
-			int index = partition(lowIndex, highIndex, ascending);
-			
-			//Sort left part
-			sortHelper(lowIndex, index - 1, ascending);
-			
-			//Sort right part
-			sortHelper(index + 1, highIndex, ascending);
-
-		}
-
-		int partition(int lowIndex, int highIndex, bool ascending)
-		{
 			//Left and right scan indices
-			int left  = lowIndex; 
-			int right = highIndex + 1;
+			int left = lowIndex;
+			int right = highIndex;
 
 			//Partitioning item
-			T partitionItem = elements[lowIndex];
+			T pivot = elements[(lowIndex + highIndex) / 2];
 
-			while (true) {
+			while (left <= right) {
 				//Scan right, scan left, check for scan complete
 				//and swap
-				while (lesser(elements[left], partitionItem) && left < elements.size()) {
+				if (ascending) {
+					while (lesser(elements[left], pivot))
+						++left;
+
+					while (greater(elements[right], pivot))
+						--right;
+				}
+				else {
+					while (greater(elements[left], pivot))
+						++left;
+
+					while (lesser(elements[right], pivot))
+						--right;
+				}
+
+				if (left <= right) {
+					std::swap(elements[left], elements[right]);
 					++left;
-
-					if (left == highIndex)
-						break;
-				}
-
-				while (lesser(partitionItem, elements[right]) && right >= 0) {
 					--right;
-
-					if (right == lowIndex)
-						break;
 				}
-
-				std::swap(elements[left], elements[right]);
 			}
 
-			//Put partitionItem = a[right] into position
-			std::swap(elements[lowIndex], elements[highIndex]);
-
-			return right;
+			//Sort left part
+			if(lowIndex < right)
+				sortHelper(lowIndex, right, ascending);
+			
+			//Sort right part
+			if(left < highIndex)
+				sortHelper(left, highIndex, ascending);
 		}
 
 		void printArray() const
