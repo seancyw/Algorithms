@@ -14,7 +14,8 @@ enum testCase
 	INSERTION_SORT,
 	SHELL_SORT,
 	MERGE_SORT,
-	QUICK_SORT
+	QUICK_SORT,
+	COUNTING_SORT
 };
 
 void linearSearchTest();
@@ -25,10 +26,11 @@ void insertionSortTest();
 void shellSortTest();
 void mergeSortTest();
 void quickSortTest();
+void countingSortTest();
 
 int main()
 {
-	testCase test = QUICK_SORT;
+	testCase test = COUNTING_SORT;
 
 	switch (test)
 	{
@@ -62,6 +64,10 @@ int main()
 
 	case QUICK_SORT:
 		quickSortTest();
+		break;
+
+	case COUNTING_SORT:
+		countingSortTest();
 		break;
 
 	default:
@@ -551,6 +557,42 @@ void quickSortTest()
 
 	std::cout << "\nAfter sorting in descending order, the lists contains: ";
 	quickDoubleSort.printArray();
+
+	std::cout << "\n";
+}
+
+void countingSortTest()
+{
+	std::cout << "Counting sort test\n\n";
+
+	//Initialize a empty vector to store value
+	std::vector<int>    intList;
+	std::vector<double> doubleList;
+
+	//initialize random seeds
+	srand((unsigned int)time(NULL));
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+	int randomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		randomValue = rand() % 250 + 1;
+		intList.push_back(randomValue);
+		std::cout << randomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::countingSort(intList, true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	sortAlgorithms::printArray(intList);
+
+	//Sort the list in descending order
+	sortAlgorithms::countingSort(intList, false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	sortAlgorithms::printArray(intList);
 
 	std::cout << "\n";
 }

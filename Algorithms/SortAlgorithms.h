@@ -148,6 +148,43 @@ namespace sortAlgorithms
 	}
 
 	template<typename T>
+	void countingSort(std::vector<T> & data, bool ascending)
+	{
+		if (data.size() == 0) {
+			throw std::exception("Nothing to sort!");
+			return;
+		}
+
+		//Get the maximum element in the list as the maximum counter
+		//range
+		int maximumElement = *std::max_element(data.begin(), data.end());
+		std::vector<int> counter(maximumElement + 1);
+		std::fill(counter.begin(), counter.end(), 0);
+
+		//Store count for each element
+		for (int i = 0; i < data.size(); ++i)
+			++counter[data[i]];
+		
+		//Recalculate each counter[i] so that it contains the actual
+		//position of the elements
+		for (int i = 1; i < counter.size(); ++i)
+			counter[i] += counter[i - 1];
+
+		//Initialize a temporary array to store the sorted array
+		std::vector<T> temp( data.size() );
+		for (int i = 0; i < data.size(); ++i) {
+			temp[counter[data[i]] - 1] = data[i];
+			--counter[data[i]];
+		}
+
+		//Copy the sort array back to original array
+		data = temp;
+
+		if (!ascending)
+			std::reverse(data.begin(), data.end());
+	}
+
+	template<typename T>
 	class MergeSort
 	{
 	public:
