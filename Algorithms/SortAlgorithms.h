@@ -185,6 +185,57 @@ namespace sortAlgorithms
 	}
 
 	template<typename T>
+	void countingSort(std::vector<T> & data, int baseDigit, bool ascending)
+	{
+		if (data.size() == 0) {
+			throw std::exception("Nothing to sort!");
+			return;
+		}
+
+		//Get the maximum element in the list as the maximum counter
+		//range
+		int maximumElement = *std::max_element(data.begin(), data.end());
+		std::vector<int> counter(maximumElement + 1);
+		std::fill(counter.begin(), counter.end(), 0);
+
+		//Store count for each element
+		for (int i = 0; i < data.size(); ++i)
+			++counter[(data[i] / baseDigit) % 10];
+
+		//Recalculate each counter[i] so that it contains the actual
+		//position of the elements
+		for (int i = 1; i < counter.size(); ++i)
+			counter[i] += counter[i - 1];
+
+		//Initialize a temporary array to store the sorted array
+		std::vector<T> temp(data.size());
+		for (int i = 0; i < data.size(); ++i) {
+			temp[ counter[(data[i] / baseDigit) % 10]  - 1] = data[i];
+			--counter[(data[i] / baseDigit) % 10];
+		}
+
+		//Copy the sort array back to original array
+		data = temp;
+
+		if (!ascending)
+			std::reverse(data.begin(), data.end());
+	}
+
+	//references from http://www.geeksforgeeks.org/radix-sort/
+	template<typename T>
+	void radixSort(std::vector<T>& data, bool ascending) 
+	{
+		//Find the maximum number to know number of digits
+		int maximumNumber = *std::max_element(data.begin(), data.end());
+
+		//Do counting sort for every digits
+		//Instead of passing digit number, base is passed
+		//base is 10^i, where i is current digit number
+		for (int base = 1; maximumNumber / base > 0; base *= 10)
+			countingSort(data, base, ascending);
+	}
+
+	template<typename T>
 	class MergeSort
 	{
 	public:
