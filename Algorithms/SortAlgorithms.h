@@ -185,17 +185,16 @@ namespace sortAlgorithms
 	}
 
 	template<typename T>
-	void countingSort(std::vector<T> & data, int baseDigit, bool ascending)
+	void countingSort(std::vector<T> & data, int baseDigit)
 	{
 		if (data.size() == 0) {
 			throw std::exception("Nothing to sort!");
 			return;
 		}
 
-		//Get the maximum element in the list as the maximum counter
-		//range
-		int maximumElement = *std::max_element(data.begin(), data.end());
-		std::vector<int> counter(maximumElement + 1);
+		//Initialize counter variables in size of 10 as remainder of
+		//10 would get value from 0 - 9
+		std::vector<int> counter( 10 );
 		std::fill(counter.begin(), counter.end(), 0);
 
 		//Store count for each element
@@ -209,16 +208,13 @@ namespace sortAlgorithms
 
 		//Initialize a temporary array to store the sorted array
 		std::vector<T> temp(data.size());
-		for (int i = 0; i < data.size(); ++i) {
+		for (int i = data.size() - 1; i >= 0; --i) {
 			temp[ counter[(data[i] / baseDigit) % 10]  - 1] = data[i];
 			--counter[(data[i] / baseDigit) % 10];
 		}
 
 		//Copy the sort array back to original array
 		data = temp;
-
-		if (!ascending)
-			std::reverse(data.begin(), data.end());
 	}
 
 	//references from http://www.geeksforgeeks.org/radix-sort/
@@ -232,7 +228,11 @@ namespace sortAlgorithms
 		//Instead of passing digit number, base is passed
 		//base is 10^i, where i is current digit number
 		for (int base = 1; maximumNumber / base > 0; base *= 10)
-			countingSort(data, base, ascending);
+			countingSort(data, base);
+
+		//reverse the array if in descending order
+		if (!ascending)
+			std::reverse(data.begin(), data.end());
 	}
 
 	template<typename T>
