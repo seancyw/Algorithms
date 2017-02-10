@@ -16,7 +16,8 @@ enum testCase
 	MERGE_SORT,
 	QUICK_SORT,
 	COUNTING_SORT,
-	RADIX_SORT
+	RADIX_SORT,
+	BUCKET_SORT
 };
 
 void linearSearchTest();
@@ -29,10 +30,11 @@ void mergeSortTest();
 void quickSortTest();
 void countingSortTest();
 void radixSortTest();
+void bucketSortTest();
 
 int main()
 {
-	testCase test = RADIX_SORT;
+	testCase test = BUCKET_SORT;
 
 	switch (test)
 	{
@@ -74,6 +76,10 @@ int main()
 
 	case RADIX_SORT:
 		radixSortTest();
+		break;
+
+	case BUCKET_SORT:
+		bucketSortTest();
 		break;
 
 	default:
@@ -633,6 +639,67 @@ void radixSortTest()
 
 	std::cout << "\nAfter sorting in descending order, the lists contains: ";
 	sortAlgorithms::printArray(intList);
+
+	std::cout << "\n";
+}
+
+void bucketSortTest()
+{
+	std::cout << "Bucket sort test\n\n";
+
+	//Initialize a empty vector to store value
+	std::vector<int>    intList;
+	std::vector<double> doubleList;
+
+	//initialize random seeds
+	srand((unsigned int)time(NULL));
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+	int randomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		randomValue = rand() % 250 + 1;
+		intList.push_back(randomValue);
+		std::cout << randomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::bucketSort(intList, true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	sortAlgorithms::printArray(intList);
+
+	//Sort the list in descending order
+	sortAlgorithms::bucketSort(intList, false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	sortAlgorithms::printArray(intList);
+
+	std::cout << "\n";
+
+	//Push value to the list
+	std::cout << "list contains the followings elements: \n";
+
+	double doubleRandomValue;
+	for (int iter = 0; iter < 20; ++iter) {
+		doubleRandomValue = (rand() % 500 + 1) + iter / 10.;
+		doubleList.push_back(doubleRandomValue);
+		std::cout << doubleRandomValue << " ";
+	}
+	std::cout << "\n";
+
+	//Sort the list in ascending order
+	sortAlgorithms::bucketSort(doubleList, true);
+
+	std::cout << "\nAfter sorting in ascending order, the lists contains: ";
+	sortAlgorithms::printArray(doubleList);
+
+	//Sort the list in descending order
+	sortAlgorithms::bucketSort(doubleList, false);
+
+	std::cout << "\nAfter sorting in descending order, the lists contains: ";
+	sortAlgorithms::printArray(doubleList);
 
 	std::cout << "\n";
 }

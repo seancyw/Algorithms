@@ -208,7 +208,7 @@ namespace sortAlgorithms
 
 		//Initialize a temporary array to store the sorted array
 		std::vector<T> temp(data.size());
-		for (int i = data.size() - 1; i >= 0; --i) {
+		for (int i = static_cast<int>( data.size() ) - 1; i >= 0; --i) {
 			temp[ counter[(data[i] / baseDigit) % 10]  - 1] = data[i];
 			--counter[(data[i] / baseDigit) % 10];
 		}
@@ -233,6 +233,42 @@ namespace sortAlgorithms
 		//reverse the array if in descending order
 		if (!ascending)
 			std::reverse(data.begin(), data.end());
+	}
+
+	template<typename T = double>
+	void bucketSort(std::vector<T> & elements, bool ascending)
+	{
+		//Create empty buckets with size of 10
+		const int bucketSize = 10;
+		std::vector < std::vector<T> > buckets(bucketSize);
+
+		//Calculate divider to put elements into the buckets
+		int divider = static_cast<int>( ceil((*std::max_element(elements.begin(), elements.end())) / bucketSize) );
+
+		//Put array elements in different buckets
+		for (int index = 0; index < elements.size(); ++index) {
+			//get the index in bucket
+			int bucketIndex = static_cast<int>( floor(elements[index] / divider) );
+
+			if (bucketIndex >= bucketSize)
+				bucketIndex = bucketSize - 1;
+
+			buckets[bucketIndex].push_back(elements[index]);
+		}
+
+		//Sort individual buckets
+		for (int index = 0; index < buckets.size(); ++index) 
+			std::sort(buckets[index].begin(), buckets[index].end());
+
+		//Concatenated all buckets back to array
+		int itemIndex = 0;
+		for (int index = 0; index < buckets.size(); ++index) {
+			for (int bucket = 0; bucket < buckets[index].size(); ++bucket)
+				elements[itemIndex++] = buckets[index][bucket];
+		}
+
+		if (!ascending)
+			std::reverse(elements.begin(), elements.end());
 	}
 
 	template<typename T>
@@ -350,7 +386,7 @@ namespace sortAlgorithms
 			std::random_shuffle(elements.begin(), elements.end());
 
 			//Do sorting
-			sortHelper(0, elements.size() - 1, ascending);
+			sortHelper(0, static_cast<int>( elements.size() ) - 1, ascending);
 		}
 
 		void sortHelper(int lowIndex, int highIndex, bool ascending)
