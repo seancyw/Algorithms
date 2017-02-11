@@ -110,7 +110,7 @@ namespace searchAlgorithms {
 	}
 
 	//Search a value in an array
-	//Return its index
+	//Return true if the value is inside the list
 	template<typename T>
 	bool binarySearchValue(std::vector<T> & element, const T& searchValue)
 	{
@@ -147,6 +147,104 @@ namespace searchAlgorithms {
 			return binarySearchValueHelper(element, searchValue, middle + 1, endIndex);
 		
 		return false;
+	}
+
+	//Return true if the value is inside the list
+	template<typename T>
+	bool jumpSearchValue(std::vector<T> & elements, const T& searchKey)
+	{
+		//Return if the array is not sorted
+		if (!isSorted(elements)) {
+			throw std::exception("Array is not sorted before jump search!");
+			return false;
+		}
+
+		//Find step size to be jumped
+		int stepSize = static_cast<int>( floor( sqrt(elements.size()) ) );
+		int step     = 0;
+
+		//Find step where the element is presented
+		int previousStep = 0;
+		while (elements[__min(step, elements.size() - 1)] < searchKey) {
+			previousStep = step;
+
+			step += stepSize;
+
+			if (previousStep >= elements.size())
+				return false;
+		}
+
+		//Doing a linear search for x in block beginning with
+		//previous position
+		while (elements[previousStep] < searchKey) {
+			previousStep++;
+
+			//if the position reached next block or end of array
+			//elements is not presented
+			if (previousStep == __min(step + 1, elements.size()))
+				return false;
+		}
+
+		//If element is found
+		if (elements[previousStep] == searchKey)
+			return true;
+
+		return false;
+	}
+	
+	//Return index if the value is inside the list
+	template<typename T>
+	int jumpSearchIndex(std::vector<T> & elements, const T& searchKey)
+	{
+		//Return if the array is not sorted
+		if (!isSorted(elements)) {
+			throw std::exception("Array is not sorted before jump search!");
+			return -1;
+		}
+
+		//Find step size to be jumped
+		int stepSize = static_cast<int>( floor(sqrt(elements.size())) );
+		int step = 0;
+
+		//Find step where the element is presented
+		int previousStep = 0;
+		while (elements[__min(step, elements.size() - 1)] < searchKey) {
+			previousStep = step;
+
+			step += stepSize;
+
+			if (previousStep >= elements.size())
+				return -1;
+		}
+
+		//Doing a linear search for x in block beginning with
+		//previous position
+		while (elements[previousStep] < searchKey) {
+			previousStep++;
+
+			//if the position reached next block or end of array
+			//elements is not presented
+			if (previousStep == __min(step + 1, elements.size()))
+				return -1;
+		}
+
+		//If element is found
+		if (elements[previousStep] == searchKey)
+			return previousStep;
+
+		return false;
+	}
+
+	//Return true is the array is sorted in ascending order
+	template<typename T>
+	bool isSorted(std::vector<T> & elements)
+	{
+		for (int i = 0; i < elements.size() - 1; ++i) {
+			if (elements[i] > elements[i + 1])
+				return false;
+		}
+
+		return true;
 	}
 
 	template<typename T>
