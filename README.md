@@ -4,6 +4,8 @@
 #Search
 - ~~Linear Search~~
 - ~~Binary Search~~
+- ~~Jump Search~~
+- Interpolation Search
 
 #Sort
 - ~~Bubble Sort~~
@@ -11,6 +13,8 @@
 - ~~Shell Sort~~
 - ~~Merged Sort~~
 - ~~Quick Sort~~
+- ~~Radix Sort~~
+- ~~Bucket Sort~~
 
 Compilation
 - Required Microsoft Visual Studio 2015 and above
