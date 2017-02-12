@@ -235,6 +235,79 @@ namespace searchAlgorithms {
 		return false;
 	}
 
+	//References from http://www.geeksforgeeks.org/interpolation-search/
+	//Return true if elements if found
+	template<typename T>
+	bool interpolationSearchValue(std::vector<T> & elements, T & searchKey)
+	{
+		//Return if the array is not sorted
+		if (!isSorted(elements)) {
+			throw std::exception("Array is not sorted!");
+			return false;
+		}
+
+		//Find indexs of low and high index
+		int left = 0;
+		int right = static_cast<int>( elements.size() ) - 1;
+
+		//As array is sorted, an elements present in array
+		//must be within the range
+		while (left <= right && searchKey >= elements[left] && searchKey <= elements[right]) {
+			//Probing the position with keeping uniform distribution
+			//in mind
+			int position = left + (((right - left) / (elements[right] - elements[left])) * (searchKey - elements[left]));
+
+			//Return if target found
+			if (elements[position] == searchKey)
+				return true;
+
+			//if search element is larger, it should be in upper part
+			if (elements[position] < searchKey)
+				left = position + 1;
+			//if search element is smaller, it should be in lower part
+			else
+				right = position - 1;
+		}
+
+		return false;
+	}
+
+	//Return index if elements if found
+	template<typename T>
+	int interpolationSearchIndex(std::vector<T> & elements, T & searchKey)
+	{
+		//Return if the array is not sorted
+		if (!isSorted(elements)) {
+			throw std::exception("Array is not sorted!");
+			return -1;
+		}
+
+		//Find indexs of low and high index
+		int left = 0;
+		int right = static_cast<int>( elements.size() ) - 1;
+		 
+		//As array is sorted, an elements present in array
+		//must be within the range
+		while (left <= right && searchKey >= elements[left] && searchKey <= elements[right]) {
+			//Probing the position with keeping uniform distribution
+			//in mind
+			int position = left + (((right - left) / (elements[right] - elements[left])) * (searchKey - elements[left]));
+
+			//Return if target found
+			if (elements[position] == searchKey)
+				return position;
+
+			//if search element is larger, it should be in upper part
+			if (elements[position] < searchKey)
+				left = position + 1;
+			//if search element is smaller, it should be in lower part
+			else
+				right = position - 1;
+		}
+
+		return -1;
+	}
+
 	//Return true is the array is sorted in ascending order
 	template<typename T>
 	bool isSorted(std::vector<T> & elements)

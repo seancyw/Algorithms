@@ -5,7 +5,7 @@
 - ~~Linear Search~~
 - ~~Binary Search~~
 - ~~Jump Search~~
-- Interpolation Search
+- ~~Interpolation Search~~
 
 #Sort
 - ~~Bubble Sort~~
